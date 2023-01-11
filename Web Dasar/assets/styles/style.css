@@ -4,11 +4,19 @@ body {
   padding: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap');
 
 h2,
 h3 {
   color: #00a2c6;
+}
+
+header {
+  display: inline;
 }
 
 nav a {
@@ -60,6 +68,8 @@ nav li {
 nav {
   background-color: #00a2c6;
   padding: 5px;
+  position: sticky;
+  top: 0;
 }
 
 nav a {
@@ -71,6 +81,18 @@ nav a {
 
 main {
   padding: 20px;
+  overflow: auto;
+}
+
+#content {
+  float: left;
+  width: 75%;
+}
+
+aside {
+  float: right;
+  width: 25%;
+  padding-left: 20px;
 }
 
 footer {
@@ -79,4 +101,12 @@ footer {
   background-color: #00a2c6;
   text-align: center;
   font-weight: bold;
+}
+
+@media screen and (max-width: 1000px) {
+  #content,
+  aside {
+    width: 100%;
+    padding: 0;
+  }
 }
