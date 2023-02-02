@@ -47,4 +47,13 @@ module.exports = {
       filename: 'index.html',
     }),
   ],
+
+  devServer: {
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
+  },
 };
