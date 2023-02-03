@@ -1,30 +1,42 @@
 function main() {
-  const getBook = () => {
-    // membuat instance dari XMLHttpRequest
-    const xhr = new XMLHttpRequest();
+  const baseUrl = 'https://books-api.dicoding.dev';
 
-    // menetapkan callback jika respon sukses dan error
-    xhr.onload = function () {
-      const responseJson = JSON.parse(this.responseText);
+  const getBook = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/list`);
+      const responseJson = await response.json();
 
       if (responseJson.error) {
         showResponseMessage(responseJson.message);
       } else {
         renderAllBooks(responseJson.books);
       }
-    };
-
-    xhr.onerror = function () {
-      showResponseMessage();
-    };
-
-    // membuat GET request dan menetapkan target URL
-    xhr.open('GET', 'https://books-api.dicoding.dev/list');
-
-    xhr.send();
+    } catch (error) {
+      showResponseMessage(error);
+    }
   };
 
-  const insertBook = (book) => {
+  const insertBook = async (book) => {
+    try {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Auth-Token': '12345',
+        },
+        body: JSON.stringify(book),
+      };
+
+      const response = await fetch(`${baseUrl}/add`, options);
+      const responseJson = await response.json();
+      showResponseMessage(responseJson.message);
+      getBook();
+    } catch (error) {
+      showResponseMessage(error);
+    }
+  };
+
+  const updateBook = (book) => {
     // Membuat instance dari XMLHttpRequest
     const xhr = new XMLHttpRequest();
 
@@ -39,8 +51,8 @@ function main() {
       showResponseMessage();
     };
 
-    // Membuat POST request dan menetapkan target URL
-    xhr.open('POST', 'https://books-api.dicoding.dev/add');
+    // Membuat PUT request dan menetapkan target URL
+    xhr.open('PUT', `https://books-api.dicoding.dev/edit/${book.id}`);
 
     // Mementapkan properti Content-Type dan X-Auth-Token pada Header request
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -50,12 +62,29 @@ function main() {
     xhr.send(JSON.stringify(book));
   };
 
-  const updateBook = (book) => {
-    // tuliskan kode di sini!
-  };
-
   const removeBook = (bookId) => {
-    // tuliskan kode di sini!
+    // Membuat instance dari XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+
+    //menetapkan callback jika response sukses dan error
+    xhr.onload = function () {
+      const responseJson = JSON.parse(this.responseText);
+      showResponseMessage(responseJson.message);
+      getBook();
+    };
+
+    xhr.onerror = function () {
+      showResponseMessage();
+    };
+
+    // Membuat DELETE request dan menetapkan target URL
+    xhr.open('DELETE', `${baseUrl}/delete/${bookId}`);
+
+    // Mementapkan properti Content-Type dan X-Auth-Token pada Header request
+    xhr.setRequestHeader('X-Auth-Token', '12345');
+
+    // Mengirimkan request
+    xhr.send();
   };
 
   /*
